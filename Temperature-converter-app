@@ -1,0 +1,133 @@
+import math
+import streamlit as st
+
+# ------------------------------------------
+# 1. Configure the application
+# ------------------------------------------
+
+st.set_page_config(
+    page_title="Temperature Converter",
+    page_icon="🌡️",
+    layout="centered"
+)
+
+# ------------------------------------------
+# 2. Display the title and introduction
+# ------------------------------------------
+
+st.title("🌡️ Temperature Converter")
+
+st. write(
+    "Convert temperatures between Celsius and Fahrenheit "
+    "quickly and easily."
+)
+
+st.divider()
+
+# ------------------------------------------
+# 3. Select the conversion type
+# ------------------------------------------
+
+conversion_type = st.selectbox(
+    "Choose your conversion:",
+    [
+        "Celsius to Fahrenheit",
+        "Fahrenheit to Celsius"
+    ]
+)
+
+# ------------------------------------------
+# 4. Set the appropriate temperature unit
+# ------------------------------------------
+
+if conversion_type == "Celsius to Fahrenheit":
+    original_unit = "°C"
+    converted_unit = "°F"
+    absolute_zero = -273.15
+else:
+    original_unit = "°F"
+    converted_unit = "°C"
+    absolute_zero = -459.67
+
+# ------------------------------------------
+# 5. Get the user's temperature input
+# ------------------------------------------
+
+temperature = st.number_input(
+    f"Enter temperature ({original_unit}):",
+    value=25.0 if conversion_type == "Celsius to Fahrenheit" else 77.0,
+    step=1.0,
+    format="%.2f"
+)
+
+# ------------------------------------------
+# 6. Validate the temperature
+# ------------------------------------------
+
+if temperature < absolute_zero:
+    st.error(
+        f"Invalid temperature! The lowest possible "
+        f"temperature is {absolute_zero} {original_unit}."
+    )
+else:
+    # --------------------------------------
+    # 7. Perform the temperature conversion
+    # --------------------------------------
+
+    if conversion_type == "Celsius to Fahrenheit":
+        converted_temperature = (temperature * 9 / 5) + 32
+        formula = "°F = (°C × 9/5) + 32"
+        calculation = f"({temperature:.2f} × 9/5) + 32"
+    else:
+        converted_temperature = (temperature - 32) * 5 / 9
+        formula = "°C = (°F - 32) × 5/9"
+        calculation = f"({temperature:.2f} - 32) × 5/9"
+
+    # --------------------------------------
+    # 8. Check that the result is valid
+    # --------------------------------------
+
+    if not mathisfinite(converted_temperature):
+        st.error(
+            "The converted temperature is too large "
+            "to calculate. Please enter a smaller value."
+        )
+    else:
+        # ----------------------------------
+        # 9. Display the conversion result
+        # ----------------------------------
+
+        st.divider()
+        st.subheader("Conversion Result")
+
+        st.success(
+            f"{temperature:.2f} {original_unit} = "
+            f"{converted_temperature:.2f} {converted_unit}"
+        )
+
+        # ----------------------------------
+        # 10. Display the formula
+        # ----------------------------------
+
+        st.subheader("Formula Used")
+        st.info(formula)
+
+        # ----------------------------------
+        # 11. Display calculation details
+        # ----------------------------------
+
+        st.subheader("Calculation Details")
+        st.write(
+            f"{calculation} = "
+            f"{converted_temperature:.2f} {converted_unit}"
+        )
+
+# ------------------------------------------
+# 12. Display the footer
+# ------------------------------------------
+
+st.divider()
+st.caption(
+    "Temperature Converter | Built with Python and Streamlit"
+)
+"Add Temperature Converter App"
